@@ -43,10 +43,6 @@
             border-left: 8px solid #facc15;
         }
 
-        #next-dose-banner {
-            animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
         .banner-urgent {
             background-color: #ef4444 !important;
             animation: pulse-red 1s infinite alternate !important;
@@ -88,7 +84,8 @@
 </head>
 <body class="min-h-screen pb-20">
 
-    <div id="next-dose-banner" class="hidden fixed top-0 inset-x-0 z-[100] bg-indigo-600 text-white p-4 shadow-2xl">
+    <!-- Banner de Alerta -->
+    <div id="next-dose-banner" class="hidden fixed top-0 inset-x-0 z-[100] bg-indigo-600 text-white p-4 shadow-2xl" style="animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
         <div class="max-w-md mx-auto flex items-start gap-4">
             <div id="banner-icon" class="bg-white/20 p-3 rounded-2xl animate-pulse mt-1">
                 <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
@@ -104,23 +101,25 @@
     <header class="bg-yellow-400 text-black p-5 sticky top-0 z-50 shadow-md">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-black tracking-tighter uppercase">APAVAN</h1>
+                <h1 class="text-2xl font-black tracking-tighter uppercase italic">APAVAN</h1>
                 <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest">Dose Controlada</p>
             </div>
-            <button onclick="openModal()" class="bg-black text-white px-5 py-2 rounded-2xl font-black shadow-md active:scale-95 transition-transform text-sm">
+            <button onclick="openModal()" class="bg-black text-white px-5 py-2 rounded-2xl font-black shadow-md active:scale-95 transition-transform text-sm uppercase">
                 + NOVO
             </button>
         </div>
     </header>
 
     <main class="max-w-md mx-auto p-4 space-y-6">
+        <!-- Alertas de Stock Baixo -->
         <div id="stock-alerts" class="hidden space-y-3">
             <h2 class="text-red-600 font-extrabold flex items-center gap-2 text-lg uppercase tracking-tight">
-                <span>⚠️</span> Repor Estoque:
+                <span>⚠️</span> Repor Stock Agora:
             </h2>
             <div id="low-stock-list" class="space-y-3"></div>
         </div>
 
+        <!-- Planos Ativos -->
         <div class="space-y-4">
             <h2 class="text-slate-900 font-black text-xl flex items-center gap-2 uppercase italic tracking-tighter">
                 Planos de Tratamento
@@ -131,6 +130,7 @@
         </div>
     </main>
 
+    <!-- Modal: Adicionar Novo Medicamento -->
     <div id="modal-form" class="fixed inset-0 bg-black/60 hidden z-[100] flex items-end sm:items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] p-7 space-y-5 max-h-[95vh] overflow-y-auto shadow-2xl">
             <div class="flex justify-between items-center">
@@ -140,19 +140,19 @@
             
             <form id="form-medication" class="space-y-4">
                 <div>
-                    <label class="block text-indigo-600 font-black text-[10px] mb-1 uppercase tracking-widest">Identificação do Paciente</label>
+                    <label class="block text-indigo-600 font-black text-[10px] mb-1 uppercase tracking-widest">Paciente</label>
                     <input type="text" id="patientName" required class="w-full p-4 bg-indigo-50 border-2 border-indigo-100 rounded-2xl text-lg font-bold outline-none focus:ring-4 focus:ring-yellow-400/50 transition-all uppercase" placeholder="NOME DO PACIENTE">
                 </div>
 
                 <div>
-                    <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Nome do Medicamento</label>
-                    <input type="text" id="name" required onblur="autoFillPurpose()" class="w-full p-4 bg-slate-100 rounded-2xl text-lg font-bold outline-none focus:ring-4 focus:ring-yellow-400/50 border-none transition-all uppercase" placeholder="EX: DIPIRONA">
+                    <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Medicamento</label>
+                    <input type="text" id="name" required onblur="autoFillPurpose()" class="w-full p-4 bg-slate-100 rounded-2xl text-lg font-bold outline-none focus:ring-4 focus:ring-yellow-400/50 border-none transition-all uppercase" placeholder="EX: PARACETAMOL">
                 </div>
 
                 <div>
-                    <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Bússola (Preenchido Automático)</label>
+                    <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Bússola (Finalidade)</label>
                     <div class="relative">
-                        <input type="text" id="purpose" class="w-full p-4 bg-slate-100 rounded-2xl text-sm font-bold outline-none border-none focus:ring-2 focus:ring-yellow-400 transition-all uppercase" placeholder="EX: DOR E FEBRE">
+                        <input type="text" id="purpose" class="w-full p-4 bg-slate-100 rounded-2xl text-sm font-bold outline-none border-none transition-all uppercase" placeholder="EX: DOR E FEBRE">
                         <div id="purpose-loader" class="hidden absolute inset-0 rounded-2xl loading-shimmer pointer-events-none opacity-50"></div>
                     </div>
                 </div>
@@ -160,23 +160,23 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Data Início</label>
-                        <input type="date" id="startDate" required class="w-full p-4 bg-slate-100 rounded-2xl font-bold outline-none focus:ring-4 focus:ring-yellow-400/50 border-none transition-all">
+                        <input type="date" id="startDate" required class="w-full p-4 bg-slate-100 rounded-2xl font-bold outline-none border-none">
                     </div>
                     <div>
-                        <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Dose (Ex: 1 comp)</label>
+                        <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Dose Unitária</label>
                         <input type="text" id="dose" required class="w-full p-4 bg-slate-100 rounded-2xl font-bold outline-none" placeholder="1 comp.">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Stock Inicial (Total)</label>
+                    <label class="block text-slate-500 font-bold text-[10px] mb-1 uppercase tracking-widest">Stock Total Inicial</label>
                     <input type="number" id="stock" required min="1" class="w-full p-4 bg-slate-100 rounded-2xl text-lg font-bold outline-none" placeholder="10">
                 </div>
 
                 <div class="bg-slate-50 p-4 rounded-3xl border border-dashed border-slate-200 space-y-3">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Dados do Fornecedor Preferencial</p>
-                    <input type="text" id="vendorName" class="w-full p-3 bg-white rounded-xl text-sm font-bold outline-none" placeholder="NOME DO FORNECEDOR/FARMÁCIA">
-                    <input type="tel" id="vendorTel" class="w-full p-3 bg-white rounded-xl text-sm font-bold outline-none" placeholder="WHATSAPP (COM DDD)">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Informações de Compra</p>
+                    <input type="text" id="vendorName" class="w-full p-3 bg-white rounded-xl text-xs font-bold outline-none" placeholder="FARMÁCIA/FORNECEDOR">
+                    <input type="tel" id="vendorTel" class="w-full p-3 bg-white rounded-xl text-xs font-bold outline-none" placeholder="WHATSAPP (COM DDD)">
                 </div>
 
                 <div>
@@ -192,23 +192,41 @@
                 <div id="time-inputs" class="space-y-3"></div>
 
                 <button type="submit" id="btn-submit" class="w-full bg-yellow-400 text-black font-black py-5 rounded-[1.5rem] text-xl shadow-lg active:bg-yellow-500 transition-all uppercase tracking-widest mt-2 flex items-center justify-center gap-3">
-                    GUARDAR TRATAMENTO
+                    REGISTAR PLANO
                 </button>
             </form>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-full shadow-2xl opacity-0 transition-opacity z-[200] font-black pointer-events-none text-center text-sm uppercase"></div>
+    <!-- Modal: Repor Stock Rapidamente -->
+    <div id="modal-restock" class="fixed inset-0 bg-black/80 hidden z-[110] flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-xs rounded-[2rem] p-8 space-y-6 text-center shadow-2xl">
+            <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-2">
+                <svg width="32" height="32" class="text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
+            </div>
+            <div>
+                <h3 id="restock-med-name" class="font-black text-xl uppercase italic leading-tight">NOME DO MED</h3>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Quanto comprou?</p>
+            </div>
+            <input type="number" id="restock-amount" class="w-full p-5 bg-slate-100 rounded-2xl text-3xl font-black text-center outline-none focus:ring-4 focus:ring-yellow-400" placeholder="0">
+            <div class="flex gap-2">
+                <button onclick="closeRestock()" class="flex-1 py-4 text-slate-400 font-black text-xs uppercase">Cancelar</button>
+                <button onclick="confirmRestock()" class="flex-[2] py-4 bg-yellow-400 text-black font-black rounded-xl text-xs uppercase shadow-md active:scale-95 transition-transform">Adicionar Stock</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-full shadow-2xl opacity-0 transition-opacity z-[200] font-black pointer-events-none text-center text-xs uppercase"></div>
 
     <script>
         const apiKey = "";
         let meds = [];
-        const STORAGE_KEY = 'cimed_v17_images';
+        const STORAGE_KEY = 'cimed_v18_final';
+        let currentRestockGroupId = null;
         let audioCtx = null;
         let alarmInterval = null;
 
-        // --- Funções de Alerta ---
-
+        // --- Alertas e Alarmes ---
         function playAlertSound(isUrgent = false) {
             try {
                 if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -217,14 +235,13 @@
                 const gain = audioCtx.createGain();
                 osc.type = isUrgent ? 'sawtooth' : 'sine';
                 osc.frequency.setValueAtTime(isUrgent ? 440 : 880, audioCtx.currentTime);
-                if (isUrgent) osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
                 gain.gain.setValueAtTime(0, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.1);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (isUrgent ? 0.5 : 1));
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                osc.stop(audioCtx.currentTime + (isUrgent ? 0.5 : 1));
+                osc.stop(audioCtx.currentTime + 1);
             } catch (e) { }
         }
 
@@ -234,31 +251,21 @@
             const todayStr = now.toISOString().split('T')[0];
             const checkTime = new Date(now.getTime() + 60000);
             const checkStr = checkTime.toTimeString().slice(0, 5);
+            
             const upcoming = meds.filter(m => m.time === checkStr && !m.takenToday && m.startDate <= todayStr);
             const overdue = meds.filter(m => !m.takenToday && m.startDate <= todayStr && m.time < currentTimeStr);
 
             if (overdue.length > 0) {
-                startCriticalAlarm(overdue);
+                showGroupedBanner(overdue, true);
+                if (!alarmInterval) {
+                    playAlertSound(true);
+                    alarmInterval = setInterval(() => playAlertSound(true), 2000);
+                }
             } else if (upcoming.length > 0) {
                 showGroupedBanner(upcoming, false);
                 playAlertSound(false);
             }
             render();
-        }
-
-        function startCriticalAlarm(overdueList) {
-            showGroupedBanner(overdueList, true);
-            if (!alarmInterval) {
-                playAlertSound(true);
-                alarmInterval = setInterval(() => playAlertSound(true), 2000);
-            }
-        }
-
-        function stopCriticalAlarm() {
-            if (alarmInterval) {
-                clearInterval(alarmInterval);
-                alarmInterval = null;
-            }
         }
 
         function showGroupedBanner(list, isUrgent) {
@@ -279,81 +286,89 @@
 
         function dismissBanner() {
             document.getElementById('next-dose-banner').classList.add('hidden');
-            stopCriticalAlarm();
+            if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
         }
 
-        setInterval(checkMedicationStatus, 30000);
-
-        // --- Funções de IA e API ---
-
+        // --- IA Gemini ---
         async function autoFillPurpose() {
             const medName = document.getElementById('name').value.trim();
             if (medName.length < 3) return;
-
             const purposeInput = document.getElementById('purpose');
             const loader = document.getElementById('purpose-loader');
-            
             loader.classList.remove('hidden');
-            purposeInput.placeholder = "PROCURANDO FUNÇÃO...";
-
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Responda apenas com a indicação principal/função do medicamento "${medName}" em no máximo 4 palavras. Ex: "DOR E FEBRE".` }] }]
+                        contents: [{ parts: [{ text: `Responda apenas com a indicação curta do medicamento "${medName}". Ex: "DOR E FEBRE". Máximo 4 palavras.` }] }]
                     })
                 });
                 const result = await response.json();
                 const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (text) {
-                    purposeInput.value = text.replace(/[".]/g, '').toUpperCase().trim();
-                }
-            } catch (error) {
-                console.error("Erro na IA:", error);
-            } finally {
-                loader.classList.add('hidden');
-                purposeInput.placeholder = "EX: DOR E FEBRE";
-            }
+                if (text) purposeInput.value = text.replace(/[".]/g, '').toUpperCase().trim();
+            } catch (e) {} finally { loader.classList.add('hidden'); }
         }
 
         async function generateMedImage(medName) {
-            const prompt = `A professional product photograph of a medicine box labeled "${medName}", white background, studio lighting.`;
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ instances: [{ prompt: prompt }], parameters: { sampleCount: 1 } })
+                    body: JSON.stringify({ instances: [{ prompt: `Product shot of medicine box ${medName}, studio lighting, white background.` }], parameters: { sampleCount: 1 } })
                 });
                 const result = await response.json();
                 return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-            } catch (error) { return null; }
+            } catch (e) { return null; }
         }
 
-        function searchBestPrice(medName) {
-            window.open(`https://www.google.com/search?q=preço+${encodeURIComponent(medName)}+farmácia`, '_blank');
+        // --- Reposição de Stock ---
+        function openRestock(groupId) {
+            currentRestockGroupId = groupId;
+            const med = meds.find(m => m.groupId === groupId);
+            document.getElementById('restock-med-name').innerText = med.name;
+            document.getElementById('restock-amount').value = '';
+            document.getElementById('modal-restock').classList.remove('hidden');
+            setTimeout(() => document.getElementById('restock-amount').focus(), 100);
         }
 
-        function findNearbyPharmacies() {
-            window.open(`https://www.google.com/maps/search/farmácia+próxima/`, '_blank');
+        function closeRestock() {
+            document.getElementById('modal-restock').classList.add('hidden');
+            currentRestockGroupId = null;
+        }
+
+        function confirmRestock() {
+            const amount = parseInt(document.getElementById('restock-amount').value);
+            if (!amount || amount <= 0) return;
+            meds.forEach(m => {
+                if (m.groupId === currentRestockGroupId) m.stock += amount;
+            });
+            saveAndRender();
+            closeRestock();
+            showToast(`📦 +${amount} ADICIONADOS AO STOCK!`);
         }
 
         // --- Lógica Principal ---
-
         function init() {
             const data = localStorage.getItem(STORAGE_KEY);
             meds = data ? JSON.parse(data) : [];
             checkDailyReset();
             render();
-            checkMedicationStatus();
+            setInterval(checkMedicationStatus, 30000);
         }
 
         function saveAndRender() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(meds));
             render();
-            const now = new Date();
-            const hasOverdue = meds.some(m => !m.takenToday && m.time < now.toTimeString().slice(0, 5) && m.startDate <= now.toISOString().split('T')[0]);
-            if (!hasOverdue) dismissBanner();
+        }
+
+        function checkDailyReset() {
+            const today = new Date().toLocaleDateString();
+            if (localStorage.getItem('cimed_day_v18') !== today) {
+                meds.forEach(m => m.takenToday = false);
+                localStorage.setItem('cimed_day_v18', today);
+                saveAndRender();
+            }
         }
 
         function setFrequency(n) {
@@ -362,11 +377,7 @@
             const container = document.getElementById('time-inputs');
             container.innerHTML = '';
             for(let i = 1; i <= n; i++) {
-                container.innerHTML += `
-                    <div class="card-med">
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Horário da Dose ${i}</label>
-                        <input type="time" required class="med-time w-full p-3 bg-slate-100 rounded-xl text-lg font-bold outline-none border-none">
-                    </div>`;
+                container.innerHTML += `<input type="time" required class="med-time w-full p-4 bg-slate-100 rounded-2xl font-bold border-none">`;
             }
         }
 
@@ -374,20 +385,17 @@
             e.preventDefault();
             const btn = document.getElementById('btn-submit');
             btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin text-2xl">⏳</span> GERANDO CAIXA...`;
-
-            const medName = document.getElementById('name').value.toUpperCase();
-            const purpose = document.getElementById('purpose').value.toUpperCase();
-            const timeInputs = document.querySelectorAll('.med-time');
-            const groupId = "G_" + Date.now();
+            btn.innerHTML = `<span class="animate-spin">⏳</span> GERANDO CAIXA...`;
             
+            const medName = document.getElementById('name').value.toUpperCase();
+            const groupId = "G_" + Date.now();
             const imageUrl = await generateMedImage(medName);
 
-            const commonData = {
+            const common = {
                 groupId,
                 patientName: document.getElementById('patientName').value.toUpperCase(),
                 name: medName,
-                purpose: purpose || 'USO GERAL',
+                purpose: document.getElementById('purpose').value.toUpperCase() || 'GERAL',
                 dose: document.getElementById('dose').value,
                 stock: parseInt(document.getElementById('stock').value),
                 startDate: document.getElementById('startDate').value,
@@ -396,16 +404,16 @@
                 boxImage: imageUrl,
                 takenToday: false
             };
-            
-            timeInputs.forEach(input => {
-                meds.push({ ...commonData, id: "ID_" + Math.random().toString(36).substr(2, 9), time: input.value });
+
+            document.querySelectorAll('.med-time').forEach(inp => {
+                meds.push({ ...common, id: "ID_" + Math.random().toString(36).substr(2, 9), time: inp.value });
             });
 
             saveAndRender();
             btn.disabled = false;
-            btn.innerHTML = 'GUARDAR TRATAMENTO';
+            btn.innerHTML = 'REGISTAR PLANO';
             closeModal();
-            showToast("✅ MEDICAMENTO REGISTADO!");
+            showToast("✅ PLANO REGISTADO COM SUCESSO!");
         });
 
         function takeDose(id) {
@@ -435,7 +443,7 @@
         }
 
         function deleteGroup(gId) {
-            if (confirm("Remover este tratamento?")) {
+            if (confirm("Deseja apagar este tratamento permanentemente?")) {
                 meds = meds.filter(m => m.groupId !== gId);
                 saveAndRender();
             }
@@ -451,39 +459,34 @@
             const todayStr = now.toISOString().split('T')[0];
 
             if (meds.length === 0) {
-                container.innerHTML = `<div class="text-center py-24 text-slate-300 font-black uppercase tracking-[0.2em] px-10 text-xs">Sem medicamentos ativos.</div>`;
+                container.innerHTML = `<div class="text-center py-32 text-slate-300 font-black uppercase text-[10px] tracking-widest px-10">Nenhum tratamento registado.</div>`;
                 alertArea.classList.add('hidden'); return;
             }
 
-            const seenGroups = new Set();
+            const seen = new Set();
             let hasLow = false;
+            
+            // Render de Alertas
             meds.forEach(m => {
-                if (!seenGroups.has(m.groupId) && m.stock <= 5) {
+                if (!seen.has(m.groupId) && m.stock <= 5) {
                     hasLow = true;
                     alertList.innerHTML += `
-                        <div class="bg-white border-2 border-red-200 rounded-[2.5rem] shadow-sm overflow-hidden card-med">
-                            <div class="flex h-40 bg-slate-100">
-                                ${m.boxImage ? `<img src="${m.boxImage}" class="w-1/2 h-full object-cover">` : `<div class="w-1/2 h-full bg-slate-200"></div>`}
-                                <div class="w-1/2 p-5 flex flex-col justify-center bg-red-50">
-                                    <span class="text-[8px] font-black text-red-400 uppercase tracking-widest mb-1">REPOR STOCK</span>
-                                    <h4 class="font-black text-red-600 text-lg leading-tight uppercase italic">${m.name}</h4>
-                                    <p class="text-[9px] font-bold text-red-800 mt-1">${m.purpose}</p>
-                                    <p class="text-[10px] font-black text-red-600 mt-2">STOCK: ${m.stock}</p>
+                        <div class="bg-white border-2 border-red-200 rounded-[2.5rem] overflow-hidden card-med shadow-md">
+                            <div class="flex h-32">
+                                ${m.boxImage ? `<img src="${m.boxImage}" class="w-1/3 h-full object-cover">` : `<div class="w-1/3 h-full bg-slate-100 flex items-center justify-center">💊</div>`}
+                                <div class="w-2/3 p-5 flex flex-col justify-center bg-red-50">
+                                    <h4 class="font-black text-red-600 text-lg uppercase italic leading-tight">${m.name}</h4>
+                                    <p class="text-[10px] font-black text-red-400 mt-1 uppercase">ESTOQUE CRÍTICO: ${m.stock}</p>
+                                    <button onclick="openRestock('${m.groupId}')" class="mt-2 bg-red-600 text-white font-black text-[9px] py-2 px-4 rounded-full uppercase self-start shadow-sm">REPOR AGORA</button>
                                 </div>
-                            </div>
-                            <div class="p-4 grid grid-cols-1 gap-2 bg-white">
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="searchBestPrice('${m.name}')" class="bg-indigo-600 text-white font-black text-[9px] py-4 rounded-2xl uppercase">🔍 PREÇOS</button>
-                                    <button onclick="findNearbyPharmacies()" class="bg-slate-900 text-white font-black text-[9px] py-4 rounded-2xl uppercase">📍 FARMÁCIAS</button>
-                                </div>
-                                ${m.vendorTel ? `<a href="https://wa.me/${m.vendorTel.replace(/\D/g, '')}" target="_blank" class="bg-green-500 text-white font-black text-[9px] py-4 rounded-2xl uppercase text-center">💬 WHATSAPP</a>` : ''}
                             </div>
                         </div>`;
                 }
-                seenGroups.add(m.groupId);
+                seen.add(m.groupId);
             });
             alertArea.classList.toggle('hidden', !hasLow);
 
+            // Render de Grupos
             const grouped = meds.reduce((acc, med) => {
                 if (!acc[med.groupId]) acc[med.groupId] = { info: med, doses: [] };
                 acc[med.groupId].doses.push(med);
@@ -494,66 +497,59 @@
                 const info = group.info;
                 if (info.startDate > todayStr) return;
 
-                const groupCard = document.createElement('div');
-                groupCard.className = "space-y-3 card-med";
-                groupCard.innerHTML = `
-                    <div class="med-group-header bg-slate-900 text-white p-5 rounded-[2.5rem] shadow-lg flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            ${info.boxImage ? `<img src="${info.boxImage}" class="w-12 h-12 rounded-xl object-cover ring-2 ring-yellow-400" />` : ''}
-                            <div>
-                                <p class="text-[8px] font-black text-yellow-400 uppercase tracking-widest mb-1">${info.patientName}</p>
-                                <h3 class="text-xl font-black italic uppercase leading-none">${info.name}</h3>
-                                <p class="text-[9px] font-bold text-slate-300 uppercase mt-1">🧭 ${info.purpose}</p>
-                                <p class="text-[9px] font-bold text-slate-500 uppercase">Dose: ${info.dose} • Stock: ${info.stock}</p>
+                const card = document.createElement('div');
+                card.className = "space-y-3 card-med";
+                card.innerHTML = `
+                    <div class="med-group-header bg-slate-900 text-white p-5 rounded-[2.5rem] shadow-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex gap-4 items-center">
+                                ${info.boxImage ? `<img src="${info.boxImage}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-yellow-400 shadow-xl" />` : ''}
+                                <div>
+                                    <span class="text-[8px] font-black text-yellow-400 uppercase tracking-widest">${info.patientName}</span>
+                                    <h3 class="text-xl font-black italic uppercase leading-none mt-1">${info.name}</h3>
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase mt-1">🧭 ${info.purpose}</p>
+                                </div>
                             </div>
+                            <button onclick="deleteGroup('${info.groupId}')" class="bg-white/5 p-2 rounded-full"><svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
                         </div>
-                        <button onclick="deleteGroup('${info.groupId}')" class="bg-white/10 p-3 rounded-full"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+                        <div class="flex justify-between items-center bg-white/5 p-3 rounded-2xl mt-4">
+                            <div>
+                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest">Stock Atual</p>
+                                <p class="text-sm font-black text-yellow-400 uppercase">${info.stock} UNID.</p>
+                            </div>
+                            <button onclick="openRestock('${info.groupId}')" class="bg-yellow-400 text-black font-black text-[10px] py-3 px-6 rounded-xl uppercase shadow-md active:scale-95 transition-all">
+                                REPOR STOCK
+                            </button>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-1 gap-2 pl-4" id="doses-for-${info.groupId}"></div>
+                    <div class="grid grid-cols-1 gap-2 pl-4" id="list-${info.groupId}"></div>
                 `;
 
-                const doseContainer = groupCard.querySelector(`#doses-for-${info.groupId}`);
+                const list = card.querySelector(`#list-${info.groupId}`);
                 group.doses.sort((a,b) => a.time.localeCompare(b.time)).forEach(dose => {
-                    const taken = dose.takenToday;
-                    const isOverdue = !taken && dose.time < timeStr;
-                    const doseItem = document.createElement('div');
-                    doseItem.className = `flex items-center gap-4 bg-white p-4 rounded-[1.8rem] border-2 transition-all ${taken ? 'border-green-100 bg-green-50/20' : (isOverdue ? 'border-red-200 bg-red-50/10' : 'border-slate-100 shadow-sm')}`;
-                    doseItem.innerHTML = `
-                        <div class="w-14 text-center font-black ${isOverdue ? 'overdue-pulse' : 'text-slate-900'} text-[10px]">
+                    const isOverdue = !dose.takenToday && dose.time < timeStr;
+                    const item = document.createElement('div');
+                    item.className = `flex items-center gap-4 bg-white p-4 rounded-[2rem] border-2 transition-all ${dose.takenToday ? 'border-green-100 opacity-60' : (isOverdue ? 'border-red-200' : 'border-slate-50 shadow-sm')}`;
+                    item.innerHTML = `
+                        <div class="w-12 text-center font-black ${isOverdue ? 'overdue-pulse' : 'text-slate-900'} text-xs">
                             ${dose.time}
-                            ${isOverdue ? '<br><span class="text-[7px] tracking-tighter">ATRASADA</span>' : ''}
                         </div>
-                        <div class="flex-1 h-6 border-l border-slate-100"></div>
+                        <div class="flex-1 h-4 border-l-2 border-slate-100"></div>
                         <div>
-                            ${taken ? `<button onclick="undoDose('${dose.id}')" class="px-5 py-2 bg-green-500 text-white font-black text-[9px] rounded-xl border border-green-600 uppercase">TOMADA ✓</button>` : `<button onclick="takeDose('${dose.id}')" class="btn-confirm px-6 ${isOverdue ? 'bg-red-500 text-white animate-bounce' : 'bg-yellow-400 text-black'} font-black text-[9px] rounded-xl shadow-sm uppercase">TOMAR AGORA</button>`}
+                            ${dose.takenToday ? `<button onclick="undoDose('${dose.id}')" class="px-5 py-3 bg-green-500 text-white font-black text-[9px] rounded-xl uppercase">OK ✓</button>` : `<button onclick="takeDose('${dose.id}')" class="btn-confirm px-6 ${isOverdue ? 'bg-red-500 text-white animate-bounce' : 'bg-yellow-400 text-black'} font-black text-[10px] rounded-xl shadow-md uppercase">TOMAR</button>`}
                         </div>`;
-                    doseContainer.appendChild(doseItem);
+                    list.appendChild(item);
                 });
-                container.appendChild(groupCard);
+                container.appendChild(card);
             });
         }
 
-        function checkDailyReset() {
-            const today = new Date().toLocaleDateString();
-            if (localStorage.getItem('cimed_day_v17') !== today) {
-                meds.forEach(m => m.takenToday = false);
-                localStorage.setItem('cimed_day_v17', today);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(meds));
-            }
-        }
-
-        function openModal() { 
-            document.getElementById('modal-form').classList.remove('hidden');
-            document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
-            setFrequency(1);
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        }
+        function openModal() { document.getElementById('modal-form').classList.remove('hidden'); setFrequency(1); }
         function closeModal() { document.getElementById('modal-form').classList.add('hidden'); }
         function showToast(msg) {
             const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-full shadow-2xl transition-opacity z-[200] font-black opacity-100 text-center text-[10px] uppercase`;
-            setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 2500);
+            t.innerText = msg; t.classList.replace('opacity-0', 'opacity-100');
+            setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 3000);
         }
 
         window.onload = init;
